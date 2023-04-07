@@ -81,7 +81,11 @@ final class RemoteCharacterServiceTests: XCTestCase {
         do {
             try sut.load()
         } catch {
-            XCTAssertEqual(error as! RemoteCharacterService.Error, RemoteCharacterService.Error.timeoutError)
+            if let error = error as? RemoteCharacterService.Error {
+                XCTAssertEqual(error, .timeoutError)
+            } else {
+                XCTFail("expecteding timeoutError, got \(error) instead.")
+            }
         }
     }
 }
