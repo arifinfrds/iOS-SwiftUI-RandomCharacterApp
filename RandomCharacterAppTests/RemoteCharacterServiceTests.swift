@@ -113,7 +113,7 @@ final class RemoteCharacterServiceTests: XCTestCase {
     }
     
     func test_load_returnsServerErrorOn500HTTPResponse() async {
-        let sut = makeSUT(sampleResponseClosure: { .networkResponse(500, "".data(using: .utf8)!) })
+        let sut = makeSUT(sampleResponseClosure: { .networkResponse(500, self.emptyJSONData()) })
         
         do {
             _ = try await sut.load(id: 1)
@@ -127,7 +127,7 @@ final class RemoteCharacterServiceTests: XCTestCase {
     }
     
     func test_load_returnsInvalidJSONErrorOn200HTTPResponseWhenHasEmptyJSON() async {
-        let sut = makeSUT(sampleResponseClosure: { .networkResponse(200, "".data(using: .utf8)!) })
+        let sut = makeSUT(sampleResponseClosure: { .networkResponse(200, self.emptyJSONData()) })
         
         do {
             _ = try await sut.load(id: 1)
@@ -205,6 +205,10 @@ final class RemoteCharacterServiceTests: XCTestCase {
         let stubbingProvider = MoyaProvider<CharacterTargetType>(endpointClosure: customEndpointClosure, stubClosure: MoyaProvider.immediatelyStub)
         let sut = RemoteCharacterService(provider: stubbingProvider)
         return sut
+    }
+    
+    private func emptyJSONData() -> Data {
+        "".data(using: .utf8)!
     }
     
     private func invalidJSONFormatData() -> Data {
