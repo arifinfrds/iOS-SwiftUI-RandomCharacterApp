@@ -123,6 +123,34 @@ final class RemoteCharacterServiceTests: XCTestCase {
         }
     }
     
+    
+    func test_load_returnsInvalidJSONErrorOn200HTTPResponseWhenHasInvalidJSONFormat() async {
+        let invalidJSONFormatData = """
+        {
+          "id": 1,
+          "name": {
+            "first": "Rick",
+            "last": "Sanchez"
+          }
+          "status": "Alive",
+          "species": "Human",
+          "gender": "Male",
+          "image": "https://rickandmortyapi.com/api/character/avatar/1.jpeg"
+        }
+        """.data(using: .utf8)!
+        let sut = makeSUT(sampleResponseClosure: { .networkResponse(200, invalidJSONFormatData) })
+        
+        do {
+            try await sut.load(id: 1)
+        } catch {
+            if let error = error as? RemoteCharacterService.Error {
+                XCTAssertEqual(error, .invalidJSONError)
+            } else {
+                XCTFail("expecteding timeoutError, got \(error) instead.")
+            }
+        }
+    }
+    
     // MARK: - Helpers
     
     private func makeSUT(sampleResponseClosure: @escaping Endpoint.SampleResponseClosure) -> RemoteCharacterService {
