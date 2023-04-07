@@ -9,7 +9,7 @@ import XCTest
 import Moya
 
 // success -> fetch character ✅
-// success -> not found
+// success -> not found ✅
 // success -> different format JSON ✅
 // success -> empty JSON ✅
 // success -> server error ✅
@@ -67,6 +67,7 @@ class RemoteCharacterService {
         case timeoutError
         case invalidJSONError
         case serverError
+        case notFoundCharacterError
     }
     
     func load(id: Int) async throws -> Character {
@@ -75,7 +76,9 @@ class RemoteCharacterService {
             provider.request(.fetchCharacter(id: id)) { result in
                 switch result {
                 case let .success(response):
-                    if response.statusCode == 500 {
+                    if response.statusCode == 201 {
+                        contunation.resume(with: .failure(Error.notFoundCharacterError))
+                    } else if response.statusCode == 500 {
                         contunation.resume(with: .failure(Error.serverError))
                     } else {
                         do {
@@ -188,6 +191,25 @@ final class RemoteCharacterServiceTests: XCTestCase {
             XCTAssertEqual(character.image, URL(string: "https://rickandmortyapi.com/api/character/avatar/1.jpeg")!)
         } catch {
             XCTFail("expecting to decode, got \(error) instead.")
+        }
+    }
+    
+    func test_load_returnsNotFoundCharacterError() async {
+        let notFoundCharacterJSONData = """
+        {
+            "error": "Character not found"
+        }
+        """.data(using: .utf8)!
+        let sut = makeSUT(sampleResponseClosure: { .networkResponse(201, notFoundCharacterJSONData) })
+        
+        do {
+            _ = try await sut.load(id: 1)
+        } catch {
+            if let error = error as? RemoteCharacterService.Error {
+                XCTAssertEqual(error, .notFoundCharacterError)
+            } else {
+                XCTFail("expecteding notFoundCharacterError, got \(error) instead.")
+            }
         }
     }
     
