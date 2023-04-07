@@ -11,9 +11,9 @@
 		9A03908929DFF871000793B4 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A03908829DFF871000793B4 /* ContentView.swift */; };
 		9A03908B29DFF872000793B4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9A03908A29DFF872000793B4 /* Assets.xcassets */; };
 		9A03908F29DFF872000793B4 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9A03908E29DFF872000793B4 /* Preview Assets.xcassets */; };
-		9A03909929DFF873000793B4 /* RandomCharacterAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A03909829DFF873000793B4 /* RandomCharacterAppTests.swift */; };
 		9A0390B429DFFAC8000793B4 /* CombineMoya in Frameworks */ = {isa = PBXBuildFile; productRef = 9A0390B329DFFAC8000793B4 /* CombineMoya */; };
 		9A0390B629DFFAC8000793B4 /* Moya in Frameworks */ = {isa = PBXBuildFile; productRef = 9A0390B529DFFAC8000793B4 /* Moya */; };
+		9A0390B929DFFB07000793B4 /* RemoteCharacterServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A0390B829DFFB07000793B4 /* RemoteCharacterServiceTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -34,8 +34,9 @@
 		9A03908C29DFF872000793B4 /* RandomCharacterApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = RandomCharacterApp.entitlements; sourceTree = "<group>"; };
 		9A03908E29DFF872000793B4 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		9A03909429DFF873000793B4 /* RandomCharacterAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RandomCharacterAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		9A03909829DFF873000793B4 /* RandomCharacterAppTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RandomCharacterAppTests.swift; sourceTree = "<group>"; };
 		9A0390B129DFF947000793B4 /* RandomCharacterApp.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = RandomCharacterApp.xctestplan; sourceTree = "<group>"; };
+		9A0390B729DFFB06000793B4 /* RandomCharacterAppTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RandomCharacterAppTests-Bridging-Header.h"; sourceTree = "<group>"; };
+		9A0390B829DFFB07000793B4 /* RemoteCharacterServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteCharacterServiceTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -100,7 +101,8 @@
 		9A03909729DFF873000793B4 /* RandomCharacterAppTests */ = {
 			isa = PBXGroup;
 			children = (
-				9A03909829DFF873000793B4 /* RandomCharacterAppTests.swift */,
+				9A0390B829DFFB07000793B4 /* RemoteCharacterServiceTests.swift */,
+				9A0390B729DFFB06000793B4 /* RandomCharacterAppTests-Bridging-Header.h */,
 			);
 			path = RandomCharacterAppTests;
 			sourceTree = "<group>";
@@ -162,6 +164,7 @@
 					};
 					9A03909329DFF873000793B4 = {
 						CreatedOnToolsVersion = 14.3;
+						LastSwiftMigration = 1430;
 						TestTargetID = 9A03908229DFF871000793B4;
 					};
 				};
@@ -221,7 +224,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9A03909929DFF873000793B4 /* RandomCharacterAppTests.swift in Sources */,
+				9A0390B929DFFB07000793B4 /* RemoteCharacterServiceTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -422,6 +425,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -433,6 +437,8 @@
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
 				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_OBJC_BRIDGING_HEADER = "RandomCharacterAppTests/RandomCharacterAppTests-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/RandomCharacterApp.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/RandomCharacterApp";
@@ -444,6 +450,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -455,6 +462,7 @@
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
 				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_OBJC_BRIDGING_HEADER = "RandomCharacterAppTests/RandomCharacterAppTests-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/RandomCharacterApp.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/RandomCharacterApp";
