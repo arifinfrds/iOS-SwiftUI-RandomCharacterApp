@@ -109,7 +109,7 @@ final class RemoteCharacterServiceTests: XCTestCase {
         }
     }
     
-    func test_load_returnsInvalidJSONErrorOn200HTTPResponse() async {
+    func test_load_returnsInvalidJSONErrorOn200HTTPResponseWhenHasEmptyJSON() async {
         let sut = makeSUT(sampleResponseClosure: { .networkResponse(200, "".data(using: .utf8)!) })
         
         do {
