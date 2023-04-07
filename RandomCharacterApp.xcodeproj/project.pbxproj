@@ -17,6 +17,7 @@
 		9A92FEE729E01BC600CB09BE /* CharacterTargetType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A92FEE629E01BC600CB09BE /* CharacterTargetType.swift */; };
 		9A92FEEA29E01C1400CB09BE /* RemoteCharacterService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A92FEE929E01C1400CB09BE /* RemoteCharacterService.swift */; };
 		9A92FEED29E01C3A00CB09BE /* Character.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A92FEEC29E01C3A00CB09BE /* Character.swift */; };
+		9A92FEF029E01CF000CB09BE /* RemoteCharacterServiceAPIIntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A92FEEF29E01CF000CB09BE /* RemoteCharacterServiceAPIIntegrationTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -43,6 +44,7 @@
 		9A92FEE629E01BC600CB09BE /* CharacterTargetType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterTargetType.swift; sourceTree = "<group>"; };
 		9A92FEE929E01C1400CB09BE /* RemoteCharacterService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteCharacterService.swift; sourceTree = "<group>"; };
 		9A92FEEC29E01C3A00CB09BE /* Character.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Character.swift; sourceTree = "<group>"; };
+		9A92FEEF29E01CF000CB09BE /* RemoteCharacterServiceAPIIntegrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteCharacterServiceAPIIntegrationTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -136,6 +138,7 @@
 			isa = PBXGroup;
 			children = (
 				9A0390B829DFFB07000793B4 /* RemoteCharacterServiceTests.swift */,
+				9A92FEEF29E01CF000CB09BE /* RemoteCharacterServiceAPIIntegrationTests.swift */,
 			);
 			path = Networking;
 			sourceTree = "<group>";
@@ -261,6 +264,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9A0390B929DFFB07000793B4 /* RemoteCharacterServiceTests.swift in Sources */,
+				9A92FEF029E01CF000CB09BE /* RemoteCharacterServiceAPIIntegrationTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
