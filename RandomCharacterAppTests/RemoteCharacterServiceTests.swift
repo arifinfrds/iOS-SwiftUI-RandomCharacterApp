@@ -8,9 +8,9 @@
 import XCTest
 import Moya
 
-// success -> fetch character
+// success -> fetch character ✅
 // success -> not found
-// success -> different format JSON
+// success -> different format JSON ✅
 // success -> empty JSON ✅
 // success -> server error ✅
 // failure -> timeout ✅
@@ -46,6 +46,15 @@ enum CharacterTargetType: TargetType {
     }
 }
 
+struct Character: Decodable {
+    let id: Int
+    let name: String
+    let status: String
+    let species: String
+    let gender: String
+    let image: URL
+}
+
 class RemoteCharacterService {
     
     private let provider: MoyaProvider<CharacterTargetType>
@@ -60,7 +69,7 @@ class RemoteCharacterService {
         case serverError
     }
     
-    func load(id: Int) async throws {
+    func load(id: Int) async throws -> Character {
         
         return try await withCheckedThrowingContinuation { contunation in
             provider.request(.fetchCharacter(id: id)) { result in
@@ -69,7 +78,12 @@ class RemoteCharacterService {
                     if response.statusCode == 500 {
                         contunation.resume(with: .failure(Error.serverError))
                     } else {
-                        contunation.resume(with: .failure(Error.invalidJSONError))
+                        do {
+                            let character = try JSONDecoder().decode(Character.self, from: response.data)
+                            contunation.resume(with: .success(character))
+                        } catch {
+                            contunation.resume(with: .failure(Error.invalidJSONError))
+                        }
                     }
                 case .failure:
                     contunation.resume(throwing: Error.timeoutError)
@@ -85,7 +99,7 @@ final class RemoteCharacterServiceTests: XCTestCase {
         let sut = makeSUT(sampleResponseClosure: { .networkError(NSError()) })
         
         do {
-            try await sut.load(id: 1)
+            _ = try await sut.load(id: 1)
         } catch {
             if let error = error as? RemoteCharacterService.Error {
                 XCTAssertEqual(error, .timeoutError)
@@ -99,7 +113,7 @@ final class RemoteCharacterServiceTests: XCTestCase {
         let sut = makeSUT(sampleResponseClosure: { .networkResponse(500, "".data(using: .utf8)!) })
         
         do {
-            try await sut.load(id: 1)
+            _ = try await sut.load(id: 1)
         } catch {
             if let error = error as? RemoteCharacterService.Error {
                 XCTAssertEqual(error, .serverError)
@@ -113,7 +127,7 @@ final class RemoteCharacterServiceTests: XCTestCase {
         let sut = makeSUT(sampleResponseClosure: { .networkResponse(200, "".data(using: .utf8)!) })
         
         do {
-            try await sut.load(id: 1)
+            _ = try await sut.load(id: 1)
         } catch {
             if let error = error as? RemoteCharacterService.Error {
                 XCTAssertEqual(error, .invalidJSONError)
@@ -141,13 +155,39 @@ final class RemoteCharacterServiceTests: XCTestCase {
         let sut = makeSUT(sampleResponseClosure: { .networkResponse(200, invalidJSONFormatData) })
         
         do {
-            try await sut.load(id: 1)
+            _ = try await sut.load(id: 1)
         } catch {
             if let error = error as? RemoteCharacterService.Error {
                 XCTAssertEqual(error, .invalidJSONError)
             } else {
                 XCTFail("expecteding timeoutError, got \(error) instead.")
             }
+        }
+    }
+    
+    func test_load_returnsCharacterOn200HTTPResponseWhenValidJSONFormat() async {
+        let validJSONFormatData = """
+        {
+          "id": 1,
+          "name": "Rick Sanchez",
+          "status": "Alive",
+          "species": "Human",
+          "gender": "Male",
+          "image": "https://rickandmortyapi.com/api/character/avatar/1.jpeg"
+        }
+        """.data(using: .utf8)!
+        let sut = makeSUT(sampleResponseClosure: { .networkResponse(200, validJSONFormatData) })
+        
+        do {
+            let character = try await sut.load(id: 1)
+            XCTAssertEqual(character.id, 1)
+            XCTAssertEqual(character.name, "Rick Sanchez")
+            XCTAssertEqual(character.status, "Alive")
+            XCTAssertEqual(character.species, "Human")
+            XCTAssertEqual(character.gender, "Male")
+            XCTAssertEqual(character.image, URL(string: "https://rickandmortyapi.com/api/character/avatar/1.jpeg")!)
+        } catch {
+            XCTFail("expecting to decode, got \(error) instead.")
         }
     }
     
