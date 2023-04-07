@@ -71,26 +71,31 @@ class RemoteCharacterService {
     }
     
     func load(id: Int) async throws -> Character {
-        
-        return try await withCheckedThrowingContinuation { contunation in
-            provider.request(.fetchCharacter(id: id)) { result in
-                switch result {
-                case let .success(response):
-                    if response.statusCode == 201 {
-                        contunation.resume(with: .failure(Error.notFoundCharacterError))
-                    } else if response.statusCode == 500 {
-                        contunation.resume(with: .failure(Error.serverError))
-                    } else {
-                        do {
-                            let character = try JSONDecoder().decode(Character.self, from: response.data)
-                            contunation.resume(with: .success(character))
-                        } catch {
-                            contunation.resume(with: .failure(Error.invalidJSONError))
-                        }
+        return try await withCheckedThrowingContinuation { contiunation in
+            load(id: id) { result in
+                contiunation.resume(with: result)
+            }
+        }
+    }
+    
+    private func load(id: Int, completion: @escaping (Result<Character, Error>) -> Void) {
+        provider.request(.fetchCharacter(id: id)) { result in
+            switch result {
+            case let .success(response):
+                if response.statusCode == 201 {
+                    completion(.failure(.notFoundCharacterError))
+                } else if response.statusCode == 500 {
+                    completion(.failure(.serverError))
+                } else {
+                    do {
+                        let character = try JSONDecoder().decode(Character.self, from: response.data)
+                        completion(.success(character))
+                    } catch {
+                        completion(.failure(.invalidJSONError))
                     }
-                case .failure:
-                    contunation.resume(throwing: Error.timeoutError)
                 }
+            case .failure:
+                completion(.failure(.timeoutError))
             }
         }
     }
