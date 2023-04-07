@@ -140,22 +140,8 @@ final class RemoteCharacterServiceTests: XCTestCase {
         }
     }
     
-    
     func test_load_returnsInvalidJSONErrorOn200HTTPResponseWhenHasInvalidJSONFormat() async {
-        let invalidJSONFormatData = """
-        {
-          "id": 1,
-          "name": {
-            "first": "Rick",
-            "last": "Sanchez"
-          }
-          "status": "Alive",
-          "species": "Human",
-          "gender": "Male",
-          "image": "https://rickandmortyapi.com/api/character/avatar/1.jpeg"
-        }
-        """.data(using: .utf8)!
-        let sut = makeSUT(sampleResponseClosure: { .networkResponse(200, invalidJSONFormatData) })
+        let sut = makeSUT(sampleResponseClosure: { .networkResponse(200, self.invalidJSONFormatData()) })
         
         do {
             _ = try await sut.load(id: 1)
@@ -293,5 +279,23 @@ final class RemoteCharacterServiceTests: XCTestCase {
         let stubbingProvider = MoyaProvider<CharacterTargetType>(endpointClosure: customEndpointClosure, stubClosure: MoyaProvider.immediatelyStub)
         let sut = RemoteCharacterService(provider: stubbingProvider)
         return sut
+    }
+    
+    private func invalidJSONFormatData() -> Data {
+        let invalidJSONFormatData = """
+        {
+          "id": 1,
+          "name": {
+            "first": "Rick",
+            "last": "Sanchez"
+          }
+          "status": "Alive",
+          "species": "Human",
+          "gender": "Male",
+          "image": "https://rickandmortyapi.com/api/character/avatar/1.jpeg"
+        }
+        """.data(using: .utf8)!
+        
+        return invalidJSONFormatData
     }
 }
