@@ -14,6 +14,9 @@
 		9A0390B429DFFAC8000793B4 /* CombineMoya in Frameworks */ = {isa = PBXBuildFile; productRef = 9A0390B329DFFAC8000793B4 /* CombineMoya */; };
 		9A0390B629DFFAC8000793B4 /* Moya in Frameworks */ = {isa = PBXBuildFile; productRef = 9A0390B529DFFAC8000793B4 /* Moya */; };
 		9A0390B929DFFB07000793B4 /* RemoteCharacterServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A0390B829DFFB07000793B4 /* RemoteCharacterServiceTests.swift */; };
+		9A92FEE729E01BC600CB09BE /* CharacterTargetType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A92FEE629E01BC600CB09BE /* CharacterTargetType.swift */; };
+		9A92FEEA29E01C1400CB09BE /* RemoteCharacterService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A92FEE929E01C1400CB09BE /* RemoteCharacterService.swift */; };
+		9A92FEED29E01C3A00CB09BE /* Character.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A92FEEC29E01C3A00CB09BE /* Character.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -37,6 +40,9 @@
 		9A0390B129DFF947000793B4 /* RandomCharacterApp.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = RandomCharacterApp.xctestplan; sourceTree = "<group>"; };
 		9A0390B729DFFB06000793B4 /* RandomCharacterAppTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RandomCharacterAppTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		9A0390B829DFFB07000793B4 /* RemoteCharacterServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteCharacterServiceTests.swift; sourceTree = "<group>"; };
+		9A92FEE629E01BC600CB09BE /* CharacterTargetType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterTargetType.swift; sourceTree = "<group>"; };
+		9A92FEE929E01C1400CB09BE /* RemoteCharacterService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteCharacterService.swift; sourceTree = "<group>"; };
+		9A92FEEC29E01C3A00CB09BE /* Character.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Character.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,6 +87,8 @@
 		9A03908529DFF871000793B4 /* RandomCharacterApp */ = {
 			isa = PBXGroup;
 			children = (
+				9A92FEE529E01BBA00CB09BE /* Networking */,
+				9A92FEEB29E01C3000CB09BE /* Feature */,
 				9A03908629DFF871000793B4 /* RandomCharacterAppApp.swift */,
 				9A03908829DFF871000793B4 /* ContentView.swift */,
 				9A03908A29DFF872000793B4 /* Assets.xcassets */,
@@ -105,6 +113,23 @@
 				9A0390B729DFFB06000793B4 /* RandomCharacterAppTests-Bridging-Header.h */,
 			);
 			path = RandomCharacterAppTests;
+			sourceTree = "<group>";
+		};
+		9A92FEE529E01BBA00CB09BE /* Networking */ = {
+			isa = PBXGroup;
+			children = (
+				9A92FEE629E01BC600CB09BE /* CharacterTargetType.swift */,
+				9A92FEE929E01C1400CB09BE /* RemoteCharacterService.swift */,
+			);
+			path = Networking;
+			sourceTree = "<group>";
+		};
+		9A92FEEB29E01C3000CB09BE /* Feature */ = {
+			isa = PBXGroup;
+			children = (
+				9A92FEEC29E01C3A00CB09BE /* Character.swift */,
+			);
+			path = Feature;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -216,6 +241,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				9A03908929DFF871000793B4 /* ContentView.swift in Sources */,
+				9A92FEEA29E01C1400CB09BE /* RemoteCharacterService.swift in Sources */,
+				9A92FEED29E01C3A00CB09BE /* Character.swift in Sources */,
+				9A92FEE729E01BC600CB09BE /* CharacterTargetType.swift in Sources */,
 				9A03908729DFF871000793B4 /* RandomCharacterAppApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
