@@ -155,6 +155,77 @@ final class RemoteCharacterServiceTests: XCTestCase {
     }
     
     func test_load_returnsCharacterOn200HTTPResponseWhenValidJSONFormat() async {
+        let sut = makeSUT(sampleResponseClosure: { .networkResponse(200, self.validJSONFormatData()) })
+        
+        do {
+            let character = try await sut.load(id: 1)
+            XCTAssertEqual(character.id, 1)
+            XCTAssertEqual(character.name, "Rick Sanchez")
+            XCTAssertEqual(character.status, "Alive")
+            XCTAssertEqual(character.species, "Human")
+            XCTAssertEqual(character.gender, "Male")
+            XCTAssertEqual(character.image, URL(string: "https://rickandmortyapi.com/api/character/avatar/1.jpeg")!)
+        } catch {
+            XCTFail("expecting to decode, got \(error) instead.")
+        }
+    }
+    
+    func test_load_returnsNotFoundCharacterError() async {
+        let notFoundCharacterJSONData = """
+        {
+            "error": "Character not found"
+        }
+        """.data(using: .utf8)!
+        let sut = makeSUT(sampleResponseClosure: { .networkResponse(201, notFoundCharacterJSONData) })
+        
+        do {
+            _ = try await sut.load(id: 1)
+        } catch {
+            if let error = error as? RemoteCharacterService.Error {
+                XCTAssertEqual(error, .notFoundCharacterError)
+            } else {
+                XCTFail("expecteding notFoundCharacterError, got \(error) instead.")
+            }
+        }
+    }
+    
+    // MARK: - Helpers
+    
+    private func makeSUT(sampleResponseClosure: @escaping Endpoint.SampleResponseClosure) -> RemoteCharacterService {
+        let customEndpointClosure = { (target: CharacterTargetType) -> Endpoint in
+            return Endpoint(
+                url: URL(target: target).absoluteString,
+                sampleResponseClosure: sampleResponseClosure,
+                method: target.method,
+                task: target.task,
+                httpHeaderFields: target.headers
+            )
+        }
+        
+        let stubbingProvider = MoyaProvider<CharacterTargetType>(endpointClosure: customEndpointClosure, stubClosure: MoyaProvider.immediatelyStub)
+        let sut = RemoteCharacterService(provider: stubbingProvider)
+        return sut
+    }
+    
+    private func invalidJSONFormatData() -> Data {
+        let invalidJSONFormatData = """
+        {
+          "id": 1,
+          "name": {
+            "first": "Rick",
+            "last": "Sanchez"
+          }
+          "status": "Alive",
+          "species": "Human",
+          "gender": "Male",
+          "image": "https://rickandmortyapi.com/api/character/avatar/1.jpeg"
+        }
+        """.data(using: .utf8)!
+        
+        return invalidJSONFormatData
+    }
+    
+    private func validJSONFormatData() -> Data {
         let validJSONFormatData = """
         {
           "id": 1,
@@ -229,73 +300,7 @@ final class RemoteCharacterServiceTests: XCTestCase {
           "created": "2017-11-04T18:48:46.250Z"
         }
         """.data(using: .utf8)!
-        let sut = makeSUT(sampleResponseClosure: { .networkResponse(200, validJSONFormatData) })
         
-        do {
-            let character = try await sut.load(id: 1)
-            XCTAssertEqual(character.id, 1)
-            XCTAssertEqual(character.name, "Rick Sanchez")
-            XCTAssertEqual(character.status, "Alive")
-            XCTAssertEqual(character.species, "Human")
-            XCTAssertEqual(character.gender, "Male")
-            XCTAssertEqual(character.image, URL(string: "https://rickandmortyapi.com/api/character/avatar/1.jpeg")!)
-        } catch {
-            XCTFail("expecting to decode, got \(error) instead.")
-        }
-    }
-    
-    func test_load_returnsNotFoundCharacterError() async {
-        let notFoundCharacterJSONData = """
-        {
-            "error": "Character not found"
-        }
-        """.data(using: .utf8)!
-        let sut = makeSUT(sampleResponseClosure: { .networkResponse(201, notFoundCharacterJSONData) })
-        
-        do {
-            _ = try await sut.load(id: 1)
-        } catch {
-            if let error = error as? RemoteCharacterService.Error {
-                XCTAssertEqual(error, .notFoundCharacterError)
-            } else {
-                XCTFail("expecteding notFoundCharacterError, got \(error) instead.")
-            }
-        }
-    }
-    
-    // MARK: - Helpers
-    
-    private func makeSUT(sampleResponseClosure: @escaping Endpoint.SampleResponseClosure) -> RemoteCharacterService {
-        let customEndpointClosure = { (target: CharacterTargetType) -> Endpoint in
-            return Endpoint(
-                url: URL(target: target).absoluteString,
-                sampleResponseClosure: sampleResponseClosure,
-                method: target.method,
-                task: target.task,
-                httpHeaderFields: target.headers
-            )
-        }
-        
-        let stubbingProvider = MoyaProvider<CharacterTargetType>(endpointClosure: customEndpointClosure, stubClosure: MoyaProvider.immediatelyStub)
-        let sut = RemoteCharacterService(provider: stubbingProvider)
-        return sut
-    }
-    
-    private func invalidJSONFormatData() -> Data {
-        let invalidJSONFormatData = """
-        {
-          "id": 1,
-          "name": {
-            "first": "Rick",
-            "last": "Sanchez"
-          }
-          "status": "Alive",
-          "species": "Human",
-          "gender": "Male",
-          "image": "https://rickandmortyapi.com/api/character/avatar/1.jpeg"
-        }
-        """.data(using: .utf8)!
-        
-        return invalidJSONFormatData
+        return validJSONFormatData
     }
 }
