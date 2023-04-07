@@ -62,11 +62,13 @@ final class RemoteCharacterServiceTests: XCTestCase {
 
     func test_load_returnsTimeoutErrorOnNetworkError() {
         let customEndpointClosure = { (target: CharacterTargetType) -> Endpoint in
-            return Endpoint(url: URL(target: target).absoluteString,
-                            sampleResponseClosure: { .networkError(NSError()) },
-                            method: target.method,
-                            task: target.task,
-                            httpHeaderFields: target.headers)
+            return Endpoint(
+                url: URL(target: target).absoluteString,
+                sampleResponseClosure: { .networkError(NSError()) },
+                method: target.method,
+                task: target.task,
+                httpHeaderFields: target.headers
+            )
         }
         
         let stubbingProvider = MoyaProvider<CharacterTargetType>(endpointClosure: customEndpointClosure, stubClosure: MoyaProvider.immediatelyStub)
