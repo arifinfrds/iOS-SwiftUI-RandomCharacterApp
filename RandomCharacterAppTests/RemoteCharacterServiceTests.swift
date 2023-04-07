@@ -12,6 +12,7 @@ import Moya
 // success -> not found
 // success -> different format JSON
 // success -> empty JSON ✅
+// success -> server error ✅
 // failure -> timeout ✅
 
 enum CharacterTargetType: TargetType {
@@ -56,6 +57,7 @@ class RemoteCharacterService {
     enum Error: Swift.Error {
         case timeoutError
         case invalidJSONError
+        case serverError
     }
     
     func load(id: Int) async throws {
@@ -63,8 +65,12 @@ class RemoteCharacterService {
         return try await withCheckedThrowingContinuation { contunation in
             provider.request(.fetchCharacter(id: id)) { result in
                 switch result {
-                case .success:
-                    contunation.resume(with: .failure(Error.invalidJSONError))
+                case let .success(response):
+                    if response.statusCode == 500 {
+                        contunation.resume(with: .failure(Error.serverError))
+                    } else {
+                        contunation.resume(with: .failure(Error.invalidJSONError))
+                    }
                 case .failure:
                     contunation.resume(throwing: Error.timeoutError)
                 }
@@ -94,6 +100,31 @@ final class RemoteCharacterServiceTests: XCTestCase {
         } catch {
             if let error = error as? RemoteCharacterService.Error {
                 XCTAssertEqual(error, .timeoutError)
+            } else {
+                XCTFail("expecteding timeoutError, got \(error) instead.")
+            }
+        }
+    }
+    
+    func test_load_returnsServerErrorOn500HTTPResponse() async {
+        let customEndpointClosure = { (target: CharacterTargetType) -> Endpoint in
+            return Endpoint(
+                url: URL(target: target).absoluteString,
+                sampleResponseClosure: { .networkResponse(500, "".data(using: .utf8)!) },
+                method: target.method,
+                task: target.task,
+                httpHeaderFields: target.headers
+            )
+        }
+        
+        let stubbingProvider = MoyaProvider<CharacterTargetType>(endpointClosure: customEndpointClosure, stubClosure: MoyaProvider.immediatelyStub)
+        let sut = RemoteCharacterService(provider: stubbingProvider)
+        
+        do {
+            try await sut.load(id: 1)
+        } catch {
+            if let error = error as? RemoteCharacterService.Error {
+                XCTAssertEqual(error, .serverError)
             } else {
                 XCTFail("expecteding timeoutError, got \(error) instead.")
             }
