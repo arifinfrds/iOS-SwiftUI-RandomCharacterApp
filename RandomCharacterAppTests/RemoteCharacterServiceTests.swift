@@ -79,23 +79,28 @@ class RemoteCharacterService {
     }
     
     private func load(id: Int, completion: @escaping (Result<Character, Error>) -> Void) {
-        provider.request(.fetchCharacter(id: id)) { result in
+        provider.request(.fetchCharacter(id: id)) { [weak self] result in
+            guard let self else { return }
             switch result {
             case let .success(response):
-                if response.statusCode == 201 {
-                    completion(.failure(.notFoundCharacterError))
-                } else if response.statusCode == 500 {
-                    completion(.failure(.serverError))
-                } else {
-                    do {
-                        let character = try JSONDecoder().decode(Character.self, from: response.data)
-                        completion(.success(character))
-                    } catch {
-                        completion(.failure(.invalidJSONError))
-                    }
-                }
+                completion(map(response))
             case .failure:
                 completion(.failure(.timeoutError))
+            }
+        }
+    }
+    
+    private func map(_ response: Moya.Response) -> Result<Character, Error> {
+        if response.statusCode == 201 {
+            return .failure(.notFoundCharacterError)
+        } else if response.statusCode == 500 {
+            return .failure(.serverError)
+        } else {
+            do {
+                let character = try JSONDecoder().decode(Character.self, from: response.data)
+                return .success(character)
+            } catch {
+                return .failure(.invalidJSONError)
             }
         }
     }
