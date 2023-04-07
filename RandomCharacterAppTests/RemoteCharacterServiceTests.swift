@@ -171,12 +171,8 @@ final class RemoteCharacterServiceTests: XCTestCase {
     }
     
     func test_load_returnsNotFoundCharacterError() async {
-        let notFoundCharacterJSONData = """
-        {
-            "error": "Character not found"
-        }
-        """.data(using: .utf8)!
-        let sut = makeSUT(sampleResponseClosure: { .networkResponse(201, notFoundCharacterJSONData) })
+
+        let sut = makeSUT(sampleResponseClosure: { .networkResponse(201, self.notFoundCharacterJSONData()) })
         
         do {
             _ = try await sut.load(id: 1)
@@ -209,6 +205,16 @@ final class RemoteCharacterServiceTests: XCTestCase {
     
     private func emptyJSONData() -> Data {
         "".data(using: .utf8)!
+    }
+    
+    private func notFoundCharacterJSONData() -> Data {
+        let notFoundCharacterJSONData = """
+        {
+            "error": "Character not found"
+        }
+        """.data(using: .utf8)!
+        
+        return notFoundCharacterJSONData
     }
     
     private func invalidJSONFormatData() -> Data {
