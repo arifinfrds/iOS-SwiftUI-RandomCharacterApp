@@ -53,8 +53,12 @@ class RemoteCharacterService {
         self.provider = provider
     }
     
+    enum Error: Swift.Error {
+        case timeoutError
+    }
+    
     func load() throws {
-        throw NSError()
+        throw Error.timeoutError
     }
 }
 
@@ -74,6 +78,10 @@ final class RemoteCharacterServiceTests: XCTestCase {
         let stubbingProvider = MoyaProvider<CharacterTargetType>(endpointClosure: customEndpointClosure, stubClosure: MoyaProvider.immediatelyStub)
         let sut = RemoteCharacterService(provider: stubbingProvider)
         
-        XCTAssertThrowsError(try sut.load())
+        do {
+            try sut.load()
+        } catch {
+            XCTAssertEqual(error as! RemoteCharacterService.Error, RemoteCharacterService.Error.timeoutError)
+        }
     }
 }
