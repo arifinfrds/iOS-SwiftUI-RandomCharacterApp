@@ -109,7 +109,7 @@
 		9A03909729DFF873000793B4 /* RandomCharacterAppTests */ = {
 			isa = PBXGroup;
 			children = (
-				9A0390B829DFFB07000793B4 /* RemoteCharacterServiceTests.swift */,
+				9A92FEEE29E01C8900CB09BE /* Networking */,
 				9A0390B729DFFB06000793B4 /* RandomCharacterAppTests-Bridging-Header.h */,
 			);
 			path = RandomCharacterAppTests;
@@ -130,6 +130,14 @@
 				9A92FEEC29E01C3A00CB09BE /* Character.swift */,
 			);
 			path = Feature;
+			sourceTree = "<group>";
+		};
+		9A92FEEE29E01C8900CB09BE /* Networking */ = {
+			isa = PBXGroup;
+			children = (
+				9A0390B829DFFB07000793B4 /* RemoteCharacterServiceTests.swift */,
+			);
+			path = Networking;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
