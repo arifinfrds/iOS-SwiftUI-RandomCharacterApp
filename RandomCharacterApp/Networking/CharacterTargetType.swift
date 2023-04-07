@@ -8,13 +8,6 @@
 import Foundation
 import Moya
 
-// success -> fetch character ✅
-// success -> not found ✅
-// success -> different format JSON ✅
-// success -> empty JSON ✅
-// success -> server error ✅
-// failure -> timeout ✅
-
 enum CharacterTargetType: TargetType {
     
     case fetchCharacter(id: Int)
