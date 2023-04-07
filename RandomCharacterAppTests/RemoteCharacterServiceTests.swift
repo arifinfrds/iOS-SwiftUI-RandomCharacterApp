@@ -82,18 +82,7 @@ class RemoteCharacterService {
 final class RemoteCharacterServiceTests: XCTestCase {
 
     func test_load_returnsTimeoutErrorOnNetworkError() async {
-        let customEndpointClosure = { (target: CharacterTargetType) -> Endpoint in
-            return Endpoint(
-                url: URL(target: target).absoluteString,
-                sampleResponseClosure: { .networkError(NSError()) },
-                method: target.method,
-                task: target.task,
-                httpHeaderFields: target.headers
-            )
-        }
-        
-        let stubbingProvider = MoyaProvider<CharacterTargetType>(endpointClosure: customEndpointClosure, stubClosure: MoyaProvider.immediatelyStub)
-        let sut = RemoteCharacterService(provider: stubbingProvider)
+        let sut = makeSUT(sampleResponseClosure: { .networkError(NSError()) })
         
         do {
             try await sut.load(id: 1)
@@ -107,18 +96,7 @@ final class RemoteCharacterServiceTests: XCTestCase {
     }
     
     func test_load_returnsServerErrorOn500HTTPResponse() async {
-        let customEndpointClosure = { (target: CharacterTargetType) -> Endpoint in
-            return Endpoint(
-                url: URL(target: target).absoluteString,
-                sampleResponseClosure: { .networkResponse(500, "".data(using: .utf8)!) },
-                method: target.method,
-                task: target.task,
-                httpHeaderFields: target.headers
-            )
-        }
-        
-        let stubbingProvider = MoyaProvider<CharacterTargetType>(endpointClosure: customEndpointClosure, stubClosure: MoyaProvider.immediatelyStub)
-        let sut = RemoteCharacterService(provider: stubbingProvider)
+        let sut = makeSUT(sampleResponseClosure: { .networkResponse(500, "".data(using: .utf8)!) })
         
         do {
             try await sut.load(id: 1)
@@ -132,18 +110,7 @@ final class RemoteCharacterServiceTests: XCTestCase {
     }
     
     func test_load_returnsInvalidJSONErrorOn200HTTPResponse() async {
-        let customEndpointClosure = { (target: CharacterTargetType) -> Endpoint in
-            return Endpoint(
-                url: URL(target: target).absoluteString,
-                sampleResponseClosure: { .networkResponse(200, "".data(using: .utf8)!) },
-                method: target.method,
-                task: target.task,
-                httpHeaderFields: target.headers
-            )
-        }
-        
-        let stubbingProvider = MoyaProvider<CharacterTargetType>(endpointClosure: customEndpointClosure, stubClosure: MoyaProvider.immediatelyStub)
-        let sut = RemoteCharacterService(provider: stubbingProvider)
+        let sut = makeSUT(sampleResponseClosure: { .networkResponse(200, "".data(using: .utf8)!) })
         
         do {
             try await sut.load(id: 1)
@@ -154,5 +121,23 @@ final class RemoteCharacterServiceTests: XCTestCase {
                 XCTFail("expecteding timeoutError, got \(error) instead.")
             }
         }
+    }
+    
+    // MARK: - Helpers
+    
+    private func makeSUT(sampleResponseClosure: @escaping Endpoint.SampleResponseClosure) -> RemoteCharacterService {
+        let customEndpointClosure = { (target: CharacterTargetType) -> Endpoint in
+            return Endpoint(
+                url: URL(target: target).absoluteString,
+                sampleResponseClosure: sampleResponseClosure,
+                method: target.method,
+                task: target.task,
+                httpHeaderFields: target.headers
+            )
+        }
+        
+        let stubbingProvider = MoyaProvider<CharacterTargetType>(endpointClosure: customEndpointClosure, stubClosure: MoyaProvider.immediatelyStub)
+        let sut = RemoteCharacterService(provider: stubbingProvider)
+        return sut
     }
 }
