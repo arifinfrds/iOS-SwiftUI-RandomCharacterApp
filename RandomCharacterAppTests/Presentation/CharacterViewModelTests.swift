@@ -5,31 +5,39 @@
 //  Created by arifin on 10/06/23.
 //
 
+import Combine
 import XCTest
 @testable import RandomCharacterApp
 
-final class CharacterViewModel {
+final class CharacterViewModel: ObservableObject {
     private let characterService: CharacterService
     
-    var shouldShowError = false
-    var errorMessage: String? = nil
-    var character: Character? = nil
+    @Published var state: State?
+    
+    enum State: Equatable {
+        case loading
+        case display(Character)
+        case error
+    }
     
     init(characterService: CharacterService) {
         self.characterService = characterService
     }
     
     func onLoad(id: Int) async {
+        state = .loading
         do {
-            character = try await characterService.load(id: id)
+            let character = try await characterService.load(id: id)
+            state = .display(character)
         } catch {
-            shouldShowError = true
-            errorMessage = "Something went wrong, please try again"
+            state = .error
         }
     }
 }
 
 final class CharacterViewModelTests: XCTestCase {
+    
+    private var cancellables = Set<AnyCancellable>()
 
     func test_init_doesNotPerformRequest() {
         let service = SpyCharacterService()
@@ -51,20 +59,34 @@ final class CharacterViewModelTests: XCTestCase {
         let expectedCharacter = Character(id: 0, name: "", status: "", species: "", gender: "", image: URL(string: "www.google.com")!)
         let service = StubCharacterService(result: .success(expectedCharacter))
         let sut = CharacterViewModel(characterService: service)
+        var receivedStates = [CharacterViewModel.State]()
+        sut.$state.sink { state in
+            if let state = state {
+                receivedStates.append(state)
+            }
+        }
+        .store(in: &cancellables)
         
         await sut.onLoad(id: 1)
         
-        XCTAssertEqual(sut.character, expectedCharacter)
+
+        XCTAssertEqual(receivedStates, [ .loading, .display(expectedCharacter) ])
     }
     
     func test_onLoad_deliversError() async {
         let service = StubCharacterService(result: .failure(RemoteCharacterService.Error.invalidJSONError))
         let sut = CharacterViewModel(characterService: service)
-        
+        var receivedStates = [CharacterViewModel.State]()
+        sut.$state.sink { state in
+            if let state = state {
+                receivedStates.append(state)
+            }
+        }
+        .store(in: &cancellables)
+
         await sut.onLoad(id: 1)
-        
-        XCTAssertEqual(sut.shouldShowError, true)
-        XCTAssertEqual(sut.errorMessage, "Something went wrong, please try again")
+
+        XCTAssertEqual(receivedStates, [ .loading, .error ])
     }
 }
 
