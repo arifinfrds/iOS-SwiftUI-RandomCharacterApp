@@ -11,7 +11,13 @@
 		9A03908929DFF871000793B4 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A03908829DFF871000793B4 /* ContentView.swift */; };
 		9A03908B29DFF872000793B4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9A03908A29DFF872000793B4 /* Assets.xcassets */; };
 		9A03908F29DFF872000793B4 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9A03908E29DFF872000793B4 /* Preview Assets.xcassets */; };
-		9A03909929DFF873000793B4 /* RandomCharacterAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A03909829DFF873000793B4 /* RandomCharacterAppTests.swift */; };
+		9A0390B429DFFAC8000793B4 /* CombineMoya in Frameworks */ = {isa = PBXBuildFile; productRef = 9A0390B329DFFAC8000793B4 /* CombineMoya */; };
+		9A0390B629DFFAC8000793B4 /* Moya in Frameworks */ = {isa = PBXBuildFile; productRef = 9A0390B529DFFAC8000793B4 /* Moya */; };
+		9A0390B929DFFB07000793B4 /* RemoteCharacterServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A0390B829DFFB07000793B4 /* RemoteCharacterServiceTests.swift */; };
+		9A92FEE729E01BC600CB09BE /* CharacterTargetType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A92FEE629E01BC600CB09BE /* CharacterTargetType.swift */; };
+		9A92FEEA29E01C1400CB09BE /* RemoteCharacterService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A92FEE929E01C1400CB09BE /* RemoteCharacterService.swift */; };
+		9A92FEED29E01C3A00CB09BE /* Character.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A92FEEC29E01C3A00CB09BE /* Character.swift */; };
+		9A92FEF029E01CF000CB09BE /* RemoteCharacterServiceAPIIntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A92FEEF29E01CF000CB09BE /* RemoteCharacterServiceAPIIntegrationTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -32,8 +38,13 @@
 		9A03908C29DFF872000793B4 /* RandomCharacterApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = RandomCharacterApp.entitlements; sourceTree = "<group>"; };
 		9A03908E29DFF872000793B4 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		9A03909429DFF873000793B4 /* RandomCharacterAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RandomCharacterAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		9A03909829DFF873000793B4 /* RandomCharacterAppTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RandomCharacterAppTests.swift; sourceTree = "<group>"; };
 		9A0390B129DFF947000793B4 /* RandomCharacterApp.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = RandomCharacterApp.xctestplan; sourceTree = "<group>"; };
+		9A0390B729DFFB06000793B4 /* RandomCharacterAppTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RandomCharacterAppTests-Bridging-Header.h"; sourceTree = "<group>"; };
+		9A0390B829DFFB07000793B4 /* RemoteCharacterServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteCharacterServiceTests.swift; sourceTree = "<group>"; };
+		9A92FEE629E01BC600CB09BE /* CharacterTargetType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterTargetType.swift; sourceTree = "<group>"; };
+		9A92FEE929E01C1400CB09BE /* RemoteCharacterService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteCharacterService.swift; sourceTree = "<group>"; };
+		9A92FEEC29E01C3A00CB09BE /* Character.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Character.swift; sourceTree = "<group>"; };
+		9A92FEEF29E01CF000CB09BE /* RemoteCharacterServiceAPIIntegrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteCharacterServiceAPIIntegrationTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -41,6 +52,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9A0390B629DFFAC8000793B4 /* Moya in Frameworks */,
+				9A0390B429DFFAC8000793B4 /* CombineMoya in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -76,6 +89,8 @@
 		9A03908529DFF871000793B4 /* RandomCharacterApp */ = {
 			isa = PBXGroup;
 			children = (
+				9A92FEE529E01BBA00CB09BE /* Networking */,
+				9A92FEEB29E01C3000CB09BE /* Feature */,
 				9A03908629DFF871000793B4 /* RandomCharacterAppApp.swift */,
 				9A03908829DFF871000793B4 /* ContentView.swift */,
 				9A03908A29DFF872000793B4 /* Assets.xcassets */,
@@ -96,9 +111,36 @@
 		9A03909729DFF873000793B4 /* RandomCharacterAppTests */ = {
 			isa = PBXGroup;
 			children = (
-				9A03909829DFF873000793B4 /* RandomCharacterAppTests.swift */,
+				9A92FEEE29E01C8900CB09BE /* Networking */,
+				9A0390B729DFFB06000793B4 /* RandomCharacterAppTests-Bridging-Header.h */,
 			);
 			path = RandomCharacterAppTests;
+			sourceTree = "<group>";
+		};
+		9A92FEE529E01BBA00CB09BE /* Networking */ = {
+			isa = PBXGroup;
+			children = (
+				9A92FEE629E01BC600CB09BE /* CharacterTargetType.swift */,
+				9A92FEE929E01C1400CB09BE /* RemoteCharacterService.swift */,
+			);
+			path = Networking;
+			sourceTree = "<group>";
+		};
+		9A92FEEB29E01C3000CB09BE /* Feature */ = {
+			isa = PBXGroup;
+			children = (
+				9A92FEEC29E01C3A00CB09BE /* Character.swift */,
+			);
+			path = Feature;
+			sourceTree = "<group>";
+		};
+		9A92FEEE29E01C8900CB09BE /* Networking */ = {
+			isa = PBXGroup;
+			children = (
+				9A0390B829DFFB07000793B4 /* RemoteCharacterServiceTests.swift */,
+				9A92FEEF29E01CF000CB09BE /* RemoteCharacterServiceAPIIntegrationTests.swift */,
+			);
+			path = Networking;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -117,6 +159,10 @@
 			dependencies = (
 			);
 			name = RandomCharacterApp;
+			packageProductDependencies = (
+				9A0390B329DFFAC8000793B4 /* CombineMoya */,
+				9A0390B529DFFAC8000793B4 /* Moya */,
+			);
 			productName = RandomCharacterApp;
 			productReference = 9A03908329DFF871000793B4 /* RandomCharacterApp.app */;
 			productType = "com.apple.product-type.application";
@@ -154,6 +200,7 @@
 					};
 					9A03909329DFF873000793B4 = {
 						CreatedOnToolsVersion = 14.3;
+						LastSwiftMigration = 1430;
 						TestTargetID = 9A03908229DFF871000793B4;
 					};
 				};
@@ -167,6 +214,9 @@
 				Base,
 			);
 			mainGroup = 9A03907A29DFF871000793B4;
+			packageReferences = (
+				9A0390B229DFFAC8000793B4 /* XCRemoteSwiftPackageReference "Moya" */,
+			);
 			productRefGroup = 9A03908429DFF871000793B4 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -202,6 +252,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				9A03908929DFF871000793B4 /* ContentView.swift in Sources */,
+				9A92FEEA29E01C1400CB09BE /* RemoteCharacterService.swift in Sources */,
+				9A92FEED29E01C3A00CB09BE /* Character.swift in Sources */,
+				9A92FEE729E01BC600CB09BE /* CharacterTargetType.swift in Sources */,
 				9A03908729DFF871000793B4 /* RandomCharacterAppApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -210,7 +263,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9A03909929DFF873000793B4 /* RandomCharacterAppTests.swift in Sources */,
+				9A0390B929DFFB07000793B4 /* RemoteCharacterServiceTests.swift in Sources */,
+				9A92FEF029E01CF000CB09BE /* RemoteCharacterServiceAPIIntegrationTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -411,6 +465,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -422,6 +477,8 @@
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
 				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_OBJC_BRIDGING_HEADER = "RandomCharacterAppTests/RandomCharacterAppTests-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/RandomCharacterApp.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/RandomCharacterApp";
@@ -433,6 +490,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -444,6 +502,7 @@
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
 				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_OBJC_BRIDGING_HEADER = "RandomCharacterAppTests/RandomCharacterAppTests-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/RandomCharacterApp.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/RandomCharacterApp";
@@ -481,6 +540,30 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		9A0390B229DFFAC8000793B4 /* XCRemoteSwiftPackageReference "Moya" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Moya/Moya.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 15.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		9A0390B329DFFAC8000793B4 /* CombineMoya */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9A0390B229DFFAC8000793B4 /* XCRemoteSwiftPackageReference "Moya" */;
+			productName = CombineMoya;
+		};
+		9A0390B529DFFAC8000793B4 /* Moya */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9A0390B229DFFAC8000793B4 /* XCRemoteSwiftPackageReference "Moya" */;
+			productName = Moya;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 9A03907B29DFF871000793B4 /* Project object */;
 }

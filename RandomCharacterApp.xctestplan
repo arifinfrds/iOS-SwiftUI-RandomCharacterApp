@@ -23,15 +23,6 @@
         "identifier" : "9A03909329DFF873000793B4",
         "name" : "RandomCharacterAppTests"
       }
-    },
-    {
-      "enabled" : false,
-      "parallelizable" : true,
-      "target" : {
-        "containerPath" : "container:RandomCharacterApp.xcodeproj",
-        "identifier" : "9A03909D29DFF873000793B4",
-        "name" : "RandomCharacterAppUITests"
-      }
     }
   ],
   "version" : 1
