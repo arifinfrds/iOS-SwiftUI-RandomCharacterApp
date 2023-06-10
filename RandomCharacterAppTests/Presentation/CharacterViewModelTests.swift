@@ -12,9 +12,10 @@ import XCTest
 final class CharacterViewModel: ObservableObject {
     private let characterService: CharacterService
     
-    @Published var state: State?
+    @Published var state: State = .initial
     
     enum State: Equatable {
+        case initial
         case loading
         case display(Character)
         case error
@@ -60,10 +61,8 @@ final class CharacterViewModelTests: XCTestCase {
         let service = StubCharacterService(result: .success(expectedCharacter))
         let sut = CharacterViewModel(characterService: service)
         var receivedStates = [CharacterViewModel.State]()
-        sut.$state.sink { state in
-            if let state = state {
-                receivedStates.append(state)
-            }
+        sut.$state.dropFirst().sink { state in
+            receivedStates.append(state)
         }
         .store(in: &cancellables)
         
@@ -77,10 +76,8 @@ final class CharacterViewModelTests: XCTestCase {
         let service = StubCharacterService(result: .failure(RemoteCharacterService.Error.invalidJSONError))
         let sut = CharacterViewModel(characterService: service)
         var receivedStates = [CharacterViewModel.State]()
-        sut.$state.sink { state in
-            if let state = state {
-                receivedStates.append(state)
-            }
+        sut.$state.dropFirst().sink { state in
+            receivedStates.append(state)
         }
         .store(in: &cancellables)
 
