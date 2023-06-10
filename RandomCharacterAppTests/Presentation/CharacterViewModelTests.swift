@@ -73,17 +73,20 @@ final class CharacterViewModelTests: XCTestCase {
     }
     
     func test_onLoad_deliversError() async {
-        let service = StubCharacterService(result: .failure(RemoteCharacterService.Error.invalidJSONError))
-        let sut = CharacterViewModel(characterService: service)
-        var receivedStates = [CharacterViewModel.State]()
-        sut.$state.dropFirst().sink { state in
-            receivedStates.append(state)
+        let errors = RemoteCharacterService.Error.allCases
+        for (index, error) in errors.enumerated() {
+            let service = StubCharacterService(result: .failure(error))
+            let sut = CharacterViewModel(characterService: service)
+            var receivedStates = [CharacterViewModel.State]()
+            sut.$state.dropFirst().sink { state in
+                receivedStates.append(state)
+            }
+            .store(in: &cancellables)
+
+            await sut.onLoad(id: 1)
+
+            XCTAssertEqual(receivedStates, [.loading, .error], "Expect error, got fail instead at index: \(index), error: \(error)")
         }
-        .store(in: &cancellables)
-
-        await sut.onLoad(id: 1)
-
-        XCTAssertEqual(receivedStates, [ .loading, .error ])
     }
 }
 
