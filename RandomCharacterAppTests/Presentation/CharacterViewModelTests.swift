@@ -14,15 +14,28 @@ final class CharacterViewModel {
     init(characterService: CharacterService) {
         self.characterService = characterService
     }
+    
+    func onLoad(id: Int) async {
+        _ = try? await characterService.load(id: id)
+    }
 }
 
 final class CharacterViewModelTests: XCTestCase {
 
     func test_init_doesNotPerformRequest() {
         let service = MockCharacterService()
-        let sut = CharacterViewModel(characterService: service)
+        _ = CharacterViewModel(characterService: service)
         
         XCTAssertEqual(service.loadUserCallCount, 0)
+    }
+    
+    func test_onLoad_performRequest() async {
+        let service = MockCharacterService()
+        let sut = CharacterViewModel(characterService: service)
+        
+        await sut.onLoad(id: 1)
+        
+        XCTAssertEqual(service.loadUserCallCount, 1)
     }
 }
 
@@ -31,6 +44,7 @@ final class MockCharacterService: CharacterService {
     var loadUserCallCount = 0
     
     func load(id: Int) async throws -> Character {
-        Character(id: 0, name: "", status: "", species: "", gender: "", image: URL(string: "www.google.com")!)
+        loadUserCallCount += 1
+        return Character(id: 0, name: "", status: "", species: "", gender: "", image: URL(string: "www.google.com")!)
     }
 }
