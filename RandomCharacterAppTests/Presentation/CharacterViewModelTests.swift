@@ -108,11 +108,6 @@ final class StubCharacterService: CharacterService {
     }
     
     func load(id: Int) async throws -> Character {
-        switch result {
-        case .success(let character):
-            return character
-        case .failure(let error):
-            throw error
-        }
+        try result.get()
     }
 }
