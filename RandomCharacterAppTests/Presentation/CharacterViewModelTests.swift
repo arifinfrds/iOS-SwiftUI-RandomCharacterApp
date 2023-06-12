@@ -52,7 +52,7 @@ final class CharacterViewModelTests: XCTestCase {
     }
     
     func test_onLoad_showsCharacter() async {
-        let expectedCharacter = Character(id: 0, name: "", status: "", species: "", gender: "", image: URL(string: "www.google.com")!)
+        let expectedCharacter = anyCharacter()
         let sut = makeSUT(result: .success(expectedCharacter))
         
         await sut.onLoad(id: 1)
@@ -72,6 +72,10 @@ final class CharacterViewModelTests: XCTestCase {
         let service = CharacterServiceSpy()
         let sut = CharacterViewModel(characterService: service)
         return (sut, service)
+    }
+    
+    private func anyCharacter() -> Character {
+        Character(id: 0, name: "", status: "", species: "", gender: "", image: URL(string: "www.google.com")!)
     }
     
     private final class CharacterServiceStub: CharacterService {
