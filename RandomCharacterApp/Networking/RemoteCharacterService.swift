@@ -20,7 +20,7 @@ class RemoteCharacterService: CharacterService {
         self.provider = provider
     }
     
-    enum Error: Swift.Error {
+    enum Error: Swift.Error, CaseIterable {
         case timeoutError
         case invalidJSONError
         case serverError

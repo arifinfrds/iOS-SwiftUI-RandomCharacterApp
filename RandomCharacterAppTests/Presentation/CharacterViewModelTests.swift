@@ -44,11 +44,14 @@ final class CharacterViewModelTests: XCTestCase {
     }
     
     func test_onLoad_showsError() async {
-        let sut = makeSUT(result: .failure(RemoteCharacterService.Error.serverError))
-        
-        await sut.onLoad(id: 1)
-        
-        XCTAssertEqual(sut.errorMessage, "Oops, an error occur, Please try again later.")
+        let errors = RemoteCharacterService.Error.allCases
+        for (index, error) in errors.enumerated() {
+            let sut = makeSUT(result: .failure(error))
+            
+            await sut.onLoad(id: 1)
+            
+            XCTAssertEqual(sut.errorMessage, "Oops, an error occur, Please try again later.", "Fail at: \(index) with error: \(error)")
+        }
     }
     
     func test_onLoad_showsCharacter() async {
