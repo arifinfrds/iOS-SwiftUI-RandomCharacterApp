@@ -30,15 +30,13 @@ final class CharacterViewModel {
 final class CharacterViewModelTests: XCTestCase {
 
     func test_init_doesNotLoadCharacter() {
-        let service = CharacterServiceSpy()
-        _ = CharacterViewModel(characterService: service)
+        let (_, service) = makeSUT()
         
         XCTAssertEqual(service.loadUserCallCount, 0)
     }
     
     func test_onLoad_loadCharacter() async {
-        let service = CharacterServiceSpy()
-        let sut = CharacterViewModel(characterService: service)
+        let (sut, service) = makeSUT()
         
         await sut.onLoad(id: 1)
         
@@ -46,8 +44,7 @@ final class CharacterViewModelTests: XCTestCase {
     }
     
     func test_onLoad_showsError() async {
-        let service = CharacterServiceStub(result: .failure(RemoteCharacterService.Error.serverError))
-        let sut = CharacterViewModel(characterService: service)
+        let sut = makeSUT(result: .failure(RemoteCharacterService.Error.serverError))
         
         await sut.onLoad(id: 1)
         
@@ -56,12 +53,25 @@ final class CharacterViewModelTests: XCTestCase {
     
     func test_onLoad_showsCharacter() async {
         let expectedCharacter = Character(id: 0, name: "", status: "", species: "", gender: "", image: URL(string: "www.google.com")!)
-        let service = CharacterServiceStub(result: .success(expectedCharacter))
-        let sut = CharacterViewModel(characterService: service)
+        let sut = makeSUT(result: .success(expectedCharacter))
         
         await sut.onLoad(id: 1)
         
         XCTAssertEqual(sut.character, expectedCharacter)
+    }
+    
+    // MARK: - Helpers
+    
+    private func makeSUT(result: Result<Character, Error>) -> CharacterViewModel {
+        let service = CharacterServiceStub(result: result)
+        let sut = CharacterViewModel(characterService: service)
+        return sut
+    }
+    
+    private func makeSUT() -> (sut: CharacterViewModel, service: CharacterServiceSpy) {
+        let service = CharacterServiceSpy()
+        let sut = CharacterViewModel(characterService: service)
+        return (sut, service)
     }
     
     private final class CharacterServiceStub: CharacterService {
