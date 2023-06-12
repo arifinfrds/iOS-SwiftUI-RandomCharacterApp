@@ -11,12 +11,18 @@ import XCTest
 final class CharacterViewModel {
     private let characterService: CharacterService
     
+    var errorMessage: String = ""
+    
     init(characterService: CharacterService) {
         self.characterService = characterService
     }
     
     func onLoad(id: Int) async {
-        _ = try? await characterService.load(id: id)
+        do {
+            _ = try await characterService.load(id: id)
+        } catch {
+            errorMessage = "Oops, an error occur, Please try again later."
+        }
     }
 }
 
@@ -36,6 +42,32 @@ final class CharacterViewModelTests: XCTestCase {
         await sut.onLoad(id: 1)
         
         XCTAssertEqual(service.loadUserCallCount, 1)
+    }
+    
+    func test_onLoad_showsError() async {
+        let service = CharacterServiceStub(result: .failure(RemoteCharacterService.Error.serverError))
+        let sut = CharacterViewModel(characterService: service)
+        
+        await sut.onLoad(id: 1)
+        
+        XCTAssertEqual(sut.errorMessage, "Oops, an error occur, Please try again later.")
+    }
+    
+    private final class CharacterServiceStub: CharacterService {
+        private let result: Result<Character, Error>
+        
+        init(result: Result<Character, Error>) {
+            self.result = result
+        }
+        
+        func load(id: Int) async throws -> Character {
+            switch result {
+            case .success(let character):
+                return character
+            case .failure(let error):
+                throw error
+            }
+        }
     }
     
     private final class CharacterServiceSpy: CharacterService {
