@@ -14,6 +14,10 @@ final class CharacterViewModel {
     init(characterService: CharacterService) {
         self.characterService = characterService
     }
+    
+    func onLoad(id: Int) async {
+        _ = try? await characterService.load(id: id)
+    }
 }
 
 final class CharacterViewModelTests: XCTestCase {
@@ -23,6 +27,15 @@ final class CharacterViewModelTests: XCTestCase {
         let sut = CharacterViewModel(characterService: service)
         
         XCTAssertEqual(service.loadUserCallCount, 0)
+    }
+    
+    func test_onLoad_loadUser() async {
+        let service = CharacterServiceSpy()
+        let sut = CharacterViewModel(characterService: service)
+        
+        await sut.onLoad(id: 1)
+        
+        XCTAssertEqual(service.loadUserCallCount, 1)
     }
     
     private final class CharacterServiceSpy: CharacterService {
