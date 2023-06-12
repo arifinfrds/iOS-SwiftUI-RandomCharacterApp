@@ -8,7 +8,11 @@
 import Foundation
 import Moya
 
-class RemoteCharacterService {
+protocol CharacterService {
+    func load(id: Int) async throws -> Character
+}
+
+class RemoteCharacterService: CharacterService {
     
     private let provider: MoyaProvider<CharacterTargetType>
     

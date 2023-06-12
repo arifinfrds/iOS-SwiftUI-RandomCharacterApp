@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1A6FE6202A37E051009D2206 /* CharacterViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A6FE61F2A37E051009D2206 /* CharacterViewModelTests.swift */; };
 		9A03908729DFF871000793B4 /* RandomCharacterAppApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A03908629DFF871000793B4 /* RandomCharacterAppApp.swift */; };
 		9A03908929DFF871000793B4 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A03908829DFF871000793B4 /* ContentView.swift */; };
 		9A03908B29DFF872000793B4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9A03908A29DFF872000793B4 /* Assets.xcassets */; };
@@ -31,6 +32,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1A6FE61F2A37E051009D2206 /* CharacterViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterViewModelTests.swift; sourceTree = "<group>"; };
 		9A03908329DFF871000793B4 /* RandomCharacterApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RandomCharacterApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9A03908629DFF871000793B4 /* RandomCharacterAppApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RandomCharacterAppApp.swift; sourceTree = "<group>"; };
 		9A03908829DFF871000793B4 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -67,6 +69,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1A6FE61E2A37E032009D2206 /* Presentation */ = {
+			isa = PBXGroup;
+			children = (
+				1A6FE61F2A37E051009D2206 /* CharacterViewModelTests.swift */,
+			);
+			path = Presentation;
+			sourceTree = "<group>";
+		};
 		9A03907A29DFF871000793B4 = {
 			isa = PBXGroup;
 			children = (
@@ -112,6 +122,7 @@
 			isa = PBXGroup;
 			children = (
 				9A92FEEE29E01C8900CB09BE /* Networking */,
+				1A6FE61E2A37E032009D2206 /* Presentation */,
 				9A0390B729DFFB06000793B4 /* RandomCharacterAppTests-Bridging-Header.h */,
 			);
 			path = RandomCharacterAppTests;
@@ -265,6 +276,7 @@
 			files = (
 				9A0390B929DFFB07000793B4 /* RemoteCharacterServiceTests.swift in Sources */,
 				9A92FEF029E01CF000CB09BE /* RemoteCharacterServiceAPIIntegrationTests.swift in Sources */,
+				1A6FE6202A37E051009D2206 /* CharacterViewModelTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
