@@ -5,6 +5,7 @@
 //  Created by arifin on 13/06/23.
 //
 
+import Combine
 import XCTest
 @testable import RandomCharacterApp
 
@@ -12,15 +13,24 @@ final class CharacterViewModel {
     private let characterService: CharacterService
     
     var errorMessage: String = ""
-    var character: Character?
+    
+    enum State: Equatable {
+        case initial
+        case loading
+        case display(Character)
+    }
+    
+    @Published var state: State = .initial
     
     init(characterService: CharacterService) {
         self.characterService = characterService
     }
     
     func onLoad(id: Int) async {
+        state = .loading
         do {
-            character = try await characterService.load(id: id)
+            let character = try await characterService.load(id: id)
+            state = .display(character)
         } catch {
             errorMessage = "Oops, an error occur, Please try again later."
         }
@@ -54,13 +64,20 @@ final class CharacterViewModelTests: XCTestCase {
         }
     }
     
+    private var cancellables = Set<AnyCancellable>()
+    
     func test_onLoad_showsCharacter() async {
         let expectedCharacter = anyCharacter()
         let sut = makeSUT(result: .success(expectedCharacter))
+        var receivedStates = [CharacterViewModel.State]()
+        sut.$state.dropFirst().sink { state in
+            receivedStates.append(state)
+        }
+        .store(in: &cancellables)
         
         await sut.onLoad(id: 1)
         
-        XCTAssertEqual(sut.character, expectedCharacter)
+        XCTAssertEqual(receivedStates, [ .loading, .display(expectedCharacter) ])
     }
     
     // MARK: - Helpers
