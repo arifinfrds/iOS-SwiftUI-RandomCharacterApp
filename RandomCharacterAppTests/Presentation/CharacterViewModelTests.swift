@@ -37,6 +37,8 @@ final class CharacterViewModel {
 }
 
 final class CharacterViewModelTests: XCTestCase {
+    
+    private var cancellables = Set<AnyCancellable>()
 
     func test_init_doesNotLoadCharacter() {
         let (_, service) = makeSUT()
@@ -67,8 +69,6 @@ final class CharacterViewModelTests: XCTestCase {
             XCTAssertEqual(receivedStates, [ .loading, .error ], "Fail at: \(index) with error: \(error)")
         }
     }
-    
-    private var cancellables = Set<AnyCancellable>()
     
     func test_onLoad_showsCharacter() async {
         let expectedCharacter = anyCharacter()
