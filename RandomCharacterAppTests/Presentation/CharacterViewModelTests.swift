@@ -12,12 +12,11 @@ import XCTest
 final class CharacterViewModel {
     private let characterService: CharacterService
     
-    var errorMessage: String = ""
-    
     enum State: Equatable {
         case initial
         case loading
         case display(Character)
+        case error
     }
     
     @Published var state: State = .initial
@@ -32,7 +31,7 @@ final class CharacterViewModel {
             let character = try await characterService.load(id: id)
             state = .display(character)
         } catch {
-            errorMessage = "Oops, an error occur, Please try again later."
+            state = .error
         }
     }
 }
@@ -57,10 +56,15 @@ final class CharacterViewModelTests: XCTestCase {
         let errors = RemoteCharacterService.Error.allCases
         for (index, error) in errors.enumerated() {
             let sut = makeSUT(result: .failure(error))
+            var receivedStates = [CharacterViewModel.State]()
+            sut.$state.dropFirst().sink { state in
+                receivedStates.append(state)
+            }
+            .store(in: &cancellables)
             
             await sut.onLoad(id: 1)
             
-            XCTAssertEqual(sut.errorMessage, "Oops, an error occur, Please try again later.", "Fail at: \(index) with error: \(error)")
+            XCTAssertEqual(receivedStates, [ .loading, .error ], "Fail at: \(index) with error: \(error)")
         }
     }
     
