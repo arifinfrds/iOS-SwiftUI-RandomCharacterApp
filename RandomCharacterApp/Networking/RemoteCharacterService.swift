@@ -8,7 +8,11 @@
 import Foundation
 import Moya
 
-class RemoteCharacterService {
+protocol CharacterService {
+    func load(id: Int) async throws -> Character
+}
+
+class RemoteCharacterService: CharacterService {
     
     private let provider: MoyaProvider<CharacterTargetType>
     
@@ -16,7 +20,7 @@ class RemoteCharacterService {
         self.provider = provider
     }
     
-    enum Error: Swift.Error {
+    enum Error: Swift.Error, CaseIterable {
         case timeoutError
         case invalidJSONError
         case serverError

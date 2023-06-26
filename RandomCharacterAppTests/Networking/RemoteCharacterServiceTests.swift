@@ -34,7 +34,7 @@ final class RemoteCharacterServiceTests: XCTestCase {
             if let error = error as? RemoteCharacterService.Error {
                 XCTAssertEqual(error, .serverError)
             } else {
-                XCTFail("expecteding timeoutError, got \(error) instead.")
+                XCTFail("expecteding serverError, got \(error) instead.")
             }
         }
     }
@@ -48,7 +48,7 @@ final class RemoteCharacterServiceTests: XCTestCase {
             if let error = error as? RemoteCharacterService.Error {
                 XCTAssertEqual(error, .invalidJSONError)
             } else {
-                XCTFail("expecteding timeoutError, got \(error) instead.")
+                XCTFail("expecteding invalidJSONError, got \(error) instead.")
             }
         }
     }
@@ -62,7 +62,7 @@ final class RemoteCharacterServiceTests: XCTestCase {
             if let error = error as? RemoteCharacterService.Error {
                 XCTAssertEqual(error, .invalidJSONError)
             } else {
-                XCTFail("expecteding timeoutError, got \(error) instead.")
+                XCTFail("expecteding invalidJSONError, got \(error) instead.")
             }
         }
     }
